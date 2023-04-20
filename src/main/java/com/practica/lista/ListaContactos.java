@@ -114,38 +114,22 @@ public class ListaContactos {
 
 	public String getPrimerNodo() {
 		NodoTemporal aux = lista;
-		String cadena = aux.getFecha().getFecha().toString();
-		cadena += ";" + aux.getFecha().getHora().toString();
-		return cadena;
+		StringBuilder builder = new StringBuilder();
+		builder.append(aux.getFecha().getFecha().toString());
+		builder.append(";");
+		builder.append(aux.getFecha().getHora().toString());
+		return builder.toString();
 	}
 
-	/**
-	 * Métodos para comprobar que insertamos de manera correcta en las listas de
-	 * coordenadas, no tienen una utilidad en sí misma, más allá de comprobar que
-	 * nuestra lista funciona de manera correcta.
-	 */
 	public int numPersonasEntreDosInstantes(FechaHora inicio, FechaHora fin) {
-		if (this.size == 0)
-			return 0;
-		NodoTemporal aux = lista;
-		int cont = 0;
-		cont = 0;
-		while (aux != null) {
-			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
-				NodoPosicion nodo = aux.getListaCoordenadas();
-				while (nodo != null) {
-					cont = cont + nodo.getNumPersonas();
-					nodo = nodo.getSiguiente();
-				}
-				aux = aux.getSiguiente();
-			} else {
-				aux = aux.getSiguiente();
-			}
-		}
-		return cont;
+		return numEntreDosInstantes(true, inicio, fin);
 	}
 
 	public int numNodosCoordenadaEntreDosInstantes(FechaHora inicio, FechaHora fin) {
+		return numEntreDosInstantes(false, inicio, fin);
+	}
+
+	private int numEntreDosInstantes(boolean personas, FechaHora inicio, FechaHora fin) {
 		if (this.size == 0)
 			return 0;
 		NodoTemporal aux = lista;
@@ -155,7 +139,10 @@ public class ListaContactos {
 			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
 				NodoPosicion nodo = aux.getListaCoordenadas();
 				while (nodo != null) {
-					cont = cont + 1;
+					if (personas)
+						cont = cont + nodo.getNumPersonas();
+					else
+						cont = cont + 1;
 					nodo = nodo.getSiguiente();
 				}
 				aux = aux.getSiguiente();
@@ -168,18 +155,21 @@ public class ListaContactos {
 
 	@Override
 	public String toString() {
-		String cadena = "";
+		StringBuilder builder = new StringBuilder();
 		int cont;
 		cont = 0;
 		NodoTemporal aux = lista;
 		for (cont = 1; cont < size; cont++) {
-			cadena += aux.getFecha().getFecha().toString();
-			cadena += ";" + aux.getFecha().getHora().toString() + " ";
+			builder.append(aux.getFecha().getFecha().toString());
+			builder.append(";");
+			builder.append(aux.getFecha().getHora().toString());
+			builder.append(" ");
 			aux = aux.getSiguiente();
 		}
-		cadena += aux.getFecha().getFecha().toString();
-		cadena += ";" + aux.getFecha().getHora().toString();
-		return cadena;
+		builder.append(aux.getFecha().getFecha().toString());
+		builder.append(";");
+		builder.append(aux.getFecha().getHora().toString());
+		return builder.toString();
 	}
 
 }

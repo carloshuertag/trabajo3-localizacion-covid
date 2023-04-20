@@ -24,8 +24,8 @@ public class ContactosCovid {
 	private Poblacion poblacion;
 	private Localizacion localizacion;
 	private ListaContactos listaContactos;
-	private final String PERSONA = "PERSONA";
-	private final String LOCALIZACION = "LOCALIZACION";
+	private final static String PERSONA = "PERSONA";
+	private final static String LOCALIZACION = "LOCALIZACION";
 
 	public ContactosCovid() {
 		this.poblacion = new Poblacion();
@@ -122,7 +122,7 @@ public class ContactosCovid {
 			EmsDuplicatePersonException, EmsDuplicateLocationException {
 		String[] datas = dividirEntrada(fileLine.trim());
 		for (String linea : datas) {
-			String data[] = this.dividirLineaData(linea);
+			String[] data = this.dividirLineaData(linea);
 			if (!data[0].equals(PERSONA) && !data[0].equals(LOCALIZACION)) {
 				throw new EmsInvalidTypeException();
 			}
@@ -199,12 +199,12 @@ public class ContactosCovid {
 	}
 
 	private String[] dividirEntrada(String input) {
-		String cadenas[] = input.split("\\n");
+		String[] cadenas = input.split("\\n");
 		return cadenas;
 	}
 
 	private String[] dividirLineaData(String data) {
-		String cadenas[] = data.split("\\;");
+		String[] cadenas = data.split("\\;");
 		return cadenas;
 	}
 
@@ -222,7 +222,8 @@ public class ContactosCovid {
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
 		PosicionPersona posicionPersona = new PosicionPersona();
-		float latitud = 0, longitud = 0;
+		float latitud = 0f;
+		float longitud = 0f;
 		posicionPersona.setDocumento(data[1]);
 		String fecha = data[2];
 		String hora = data[3];

@@ -4,7 +4,6 @@ public class Coordenada {
 	private float latitud, longitud;
 
 	public Coordenada() {
-		super();
 	}
 
 	public Coordenada(float latitud, float longitud) {

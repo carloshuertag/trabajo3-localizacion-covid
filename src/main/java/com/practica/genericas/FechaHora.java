@@ -1,10 +1,13 @@
 package com.practica.genericas;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class FechaHora implements Comparable<FechaHora> {
 	public class Fecha {
-		private int dia, mes, anio;
+		private int dia;
+		private int mes;
+		private int anio;
 
 		public Fecha(int dia, int mes, int anio) {
 			super();
@@ -43,6 +46,11 @@ public class FechaHora implements Comparable<FechaHora> {
 		}
 
 		@Override
+		public int hashCode() {
+			return Objects.hash(dia, mes, anio);
+		}
+
+		@Override
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
@@ -57,7 +65,8 @@ public class FechaHora implements Comparable<FechaHora> {
 	}
 
 	public class Hora {
-		private int hora, minuto;
+		private int hora;
+		private int minuto;
 
 		public Hora(int hora, int minuto) {
 			super();
@@ -87,6 +96,11 @@ public class FechaHora implements Comparable<FechaHora> {
 		}
 
 		@Override
+		public int hashCode() {
+			return Objects.hash(hora, minuto);
+		}
+
+		@Override
 		public boolean equals(Object obj) {
 			if (this == obj)
 				return true;
@@ -99,8 +113,8 @@ public class FechaHora implements Comparable<FechaHora> {
 
 	}
 
-	Fecha fecha;
-	Hora hora;
+	private Fecha fecha;
+	private Hora hora;
 
 	public FechaHora(Fecha fecha, Hora hora) {
 		super();

@@ -2,6 +2,7 @@ package com.practica.ems.covid;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.practica.excecption.EmsDuplicateLocationException;
 import com.practica.excecption.EmsLocalizationNotFoundException;
@@ -13,10 +14,10 @@ public class Localizacion {
 
 	public Localizacion() {
 		super();
-		this.lista = new LinkedList<PosicionPersona>();
+		this.lista = new LinkedList<>();
 	};
 
-	public LinkedList<PosicionPersona> getLista() {
+	public List<PosicionPersona> getLista() {
 		return lista;
 	}
 
@@ -70,7 +71,7 @@ public class Localizacion {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		lista.forEach(pp -> builder.append(pp));
+		lista.forEach(builder::append);
 		return builder.toString();
 	}
 
@@ -81,8 +82,7 @@ public class Localizacion {
 		dia = Integer.parseInt(valores[0]);
 		mes = Integer.parseInt(valores[1]);
 		anio = Integer.parseInt(valores[2]);
-		FechaHora fechaHora = new FechaHora(dia, mes, anio, 0, 0);
-		return fechaHora;
+		return new FechaHora(dia, mes, anio, 0, 0);
 	}
 
 	private FechaHora parsearFecha(String fecha, String hora) {
@@ -95,8 +95,7 @@ public class Localizacion {
 		valores = hora.split("\\:");
 		minuto = Integer.parseInt(valores[0]);
 		segundo = Integer.parseInt(valores[1]);
-		FechaHora fechaHora = new FechaHora(dia, mes, anio, minuto, segundo);
-		return fechaHora;
+		return new FechaHora(dia, mes, anio, minuto, segundo);
 	}
 
 }

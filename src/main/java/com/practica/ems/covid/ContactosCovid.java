@@ -25,7 +25,7 @@ public class ContactosCovid {
 	private Localizacion localizacion;
 	private ListaContactos listaContactos;
 
-	private static enum DATA_TAG {
+	private enum DATA_TAG {
 		PERSONA("PERSONA"),
 		LOCALIZACION("LOCALIZACION");
 
@@ -38,7 +38,7 @@ public class ContactosCovid {
 		public String getValue() {
 			return value;
 		}
-	};
+	}
 
 	public ContactosCovid() {
 		this.poblacion = new Poblacion();
@@ -76,7 +76,7 @@ public class ContactosCovid {
 			resetContactos();
 		String[] datas = dividirEntrada(data);
 		for (String linea : datas) {
-			String datos[] = this.dividirLineaData(linea);
+			String[] datos = this.dividirLineaData(linea);
 			if (datos[0].equals(DATA_TAG.PERSONA.getValue())) {
 				if (datos.length != Constantes.MAX_DATOS_PERSONA.getValue()) {
 					throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
@@ -250,8 +250,7 @@ public class ContactosCovid {
 		dia = Integer.parseInt(valores[0]);
 		mes = Integer.parseInt(valores[1]);
 		anio = Integer.parseInt(valores[2]);
-		FechaHora fechaHora = new FechaHora(dia, mes, anio, 0, 0);
-		return fechaHora;
+		return new FechaHora(dia, mes, anio, 0, 0);
 	}
 
 	private FechaHora parsearFecha(String fecha, String hora) {
@@ -264,7 +263,6 @@ public class ContactosCovid {
 		valores = hora.split("\\:");
 		minuto = Integer.parseInt(valores[0]);
 		segundo = Integer.parseInt(valores[1]);
-		FechaHora fechaHora = new FechaHora(dia, mes, anio, minuto, segundo);
-		return fechaHora;
+		return new FechaHora(dia, mes, anio, minuto, segundo);
 	}
 }

@@ -8,11 +8,6 @@ public enum Constantes {
 	private final String key;
 	private final int value;
 
-	Constantes(String key) {
-		this.key = key;
-		this.value = 0;
-	}
-
 	Constantes(int value) {
 		this.key = null;
 		this.value = value;

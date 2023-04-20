@@ -2,6 +2,7 @@ package com.practica.ems.covid;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.practica.excecption.EmsDuplicatePersonException;
 import com.practica.excecption.EmsPersonNotFoundException;
@@ -12,10 +13,10 @@ public class Poblacion {
 
 	public Poblacion() {
 		super();
-		this.lista = new LinkedList<Persona>();
+		this.lista = new LinkedList<>();
 	}
 
-	public LinkedList<Persona> getLista() {
+	public List<Persona> getLista() {
 		return lista;
 	}
 
@@ -67,7 +68,7 @@ public class Poblacion {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		lista.forEach(p -> builder.append(p.toString()));
+		lista.forEach(builder::append);
 		return builder.toString();
 	}
 

@@ -222,11 +222,10 @@ public class ContactosCovid {
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
 		PosicionPersona posicionPersona = new PosicionPersona();
-		String fecha = null, hora;
 		float latitud = 0, longitud = 0;
 		posicionPersona.setDocumento(data[1]);
-		fecha = data[2];
-		hora = data[3];
+		String fecha = data[2];
+		String hora = data[3];
 		posicionPersona.setFechaPosicion(parsearFecha(fecha, hora));
 		latitud = Float.parseFloat(data[4]);
 		longitud = Float.parseFloat(data[5]);

@@ -60,11 +60,8 @@ public class ContactosCovid {
 	public void loadData(String data, boolean reset) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException,
 			EmsDuplicatePersonException, EmsDuplicateLocationException {
 		// borro información anterior
-		if (reset) {
-			this.poblacion = new Poblacion();
-			this.localizacion = new Localizacion();
-			this.listaContactos = new ListaContactos();
-		}
+		if (reset)
+			resetContactos();
 		String[] datas = dividirEntrada(data);
 		for (String linea : datas) {
 			String datos[] = this.dividirLineaData(linea);
@@ -75,71 +72,38 @@ public class ContactosCovid {
 				if (datos.length != Constantes.MAX_DATOS_PERSONA) {
 					throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
 				}
-				this.poblacion.addPersona(this.crearPersona(datos));
+				getPoblacion().addPersona(this.crearPersona(datos));
 			}
 			if (datos[0].equals("LOCALIZACION")) {
 				if (datos.length != Constantes.MAX_DATOS_LOCALIZACION) {
 					throw new EmsInvalidNumberOfDataException("El número de datos para LOCALIZACION es menor de 6");
 				}
 				PosicionPersona pp = this.crearPosicionPersona(datos);
-				this.localizacion.addLocalizacion(pp);
-				this.listaContactos.insertarNodoTemporal(pp);
+				getLocalizacion().addLocalizacion(pp);
+				getListaContactos().insertarNodoTemporal(pp);
 			}
 		}
 	}
 
-	public void loadDataFile(String fichero, boolean reset) {
-		File archivo = null;
-		FileReader fr = null;
-		BufferedReader br = null;
-		String[] datas = null;
-		String data = null;
-		loadDataFile(fichero, reset, archivo, fr, br, datas, data);
-
+	private void resetContactos() {
+		setPoblacion(new Poblacion());
+		setLocalizacion(new Localizacion());
+		setListaContactos(new ListaContactos());
 	}
 
 	@SuppressWarnings("resource")
-	public void loadDataFile(String fichero, boolean reset, File archivo, FileReader fr, BufferedReader br,
-			String[] datas, String data) {
+	public void loadDataFile(String fichero, boolean reset) {
+		FileReader fr = null;
+		BufferedReader br = null;
+		String data = null;
 		try {
-			// Apertura del fichero y creacion de BufferedReader para poder
-			// hacer una lectura comoda (disponer del metodo readLine()).
-			archivo = new File(fichero);
-			fr = new FileReader(archivo);
+			fr = new FileReader(new File(fichero));
 			br = new BufferedReader(fr);
-			if (reset) {
-				this.poblacion = new Poblacion();
-				this.localizacion = new Localizacion();
-				this.listaContactos = new ListaContactos();
-			}
-			/**
-			 * Lectura del fichero línea a línea. Compruebo que cada línea
-			 * tiene el tipo PERSONA o LOCALIZACION y cargo la línea de datos en la
-			 * lista correspondiente. Sino viene ninguno de esos tipos lanzo una excepción
-			 */
+			if (reset)
+				resetContactos();
 			while ((data = br.readLine()) != null) {
-				datas = dividirEntrada(data.trim());
-				for (String linea : datas) {
-					String datos[] = this.dividirLineaData(linea);
-					if (!datos[0].equals(PERSONA) && !datos[0].equals(LOCALIZACION)) {
-						throw new EmsInvalidTypeException();
-					}
-					if (datos[0].equals(PERSONA)) {
-						if (datos.length != Constantes.MAX_DATOS_PERSONA) {
-							throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
-						}
-						this.poblacion.addPersona(this.crearPersona(datos));
-					}
-					if (datos[0].equals(LOCALIZACION)) {
-						if (datos.length != Constantes.MAX_DATOS_LOCALIZACION) {
-							throw new EmsInvalidNumberOfDataException(
-									"El número de datos para LOCALIZACION es menor de 6");
-						}
-						PosicionPersona pp = this.crearPosicionPersona(datos);
-						this.localizacion.addLocalizacion(pp);
-						this.listaContactos.insertarNodoTemporal(pp);
-					}
-				}
+				// process file line by line, may produce several exceptions
+				processFileLines(data);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,10 +118,36 @@ public class ContactosCovid {
 		}
 	}
 
+	private void processFileLines(String fileLine) throws EmsInvalidTypeException, EmsInvalidNumberOfDataException,
+			EmsDuplicatePersonException, EmsDuplicateLocationException {
+		String[] datas = dividirEntrada(fileLine.trim());
+		for (String linea : datas) {
+			String data[] = this.dividirLineaData(linea);
+			if (!data[0].equals(PERSONA) && !data[0].equals(LOCALIZACION)) {
+				throw new EmsInvalidTypeException();
+			}
+			if (data[0].equals(PERSONA)) {
+				if (data.length != Constantes.MAX_DATOS_PERSONA) {
+					throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
+				}
+				getPoblacion().addPersona(this.crearPersona(data));
+			}
+			if (data[0].equals(LOCALIZACION)) {
+				if (data.length != Constantes.MAX_DATOS_LOCALIZACION) {
+					throw new EmsInvalidNumberOfDataException(
+							"El número de datos para LOCALIZACION es menor de 6");
+				}
+				PosicionPersona pp = this.crearPosicionPersona(data);
+				getLocalizacion().addLocalizacion(pp);
+				getListaContactos().insertarNodoTemporal(pp);
+			}
+		}
+	}
+
 	public int findPersona(String documento) throws EmsPersonNotFoundException {
 		int pos;
 		try {
-			pos = this.poblacion.findPersona(documento);
+			pos = getPoblacion().findPersona(documento);
 			return pos;
 		} catch (EmsPersonNotFoundException e) {
 			throw new EmsPersonNotFoundException();
@@ -165,7 +155,6 @@ public class ContactosCovid {
 	}
 
 	public int findLocalizacion(String documento, String fecha, String hora) throws EmsLocalizationNotFoundException {
-
 		int pos;
 		try {
 			pos = localizacion.findLocalizacion(documento, fecha, hora);
@@ -178,7 +167,7 @@ public class ContactosCovid {
 	public List<PosicionPersona> localizacionPersona(String documento) throws EmsPersonNotFoundException {
 		int cont = 0;
 		List<PosicionPersona> lista = new ArrayList<PosicionPersona>();
-		Iterator<PosicionPersona> it = this.localizacion.getLista().iterator();
+		Iterator<PosicionPersona> it = getLocalizacion().getLista().iterator();
 		while (it.hasNext()) {
 			PosicionPersona pp = it.next();
 			if (pp.getDocumento().equals(documento)) {

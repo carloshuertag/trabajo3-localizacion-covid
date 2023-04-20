@@ -11,42 +11,16 @@ public class ListaContactos {
 	 * Insertamos en la lista de nodos temporales, y a la vez inserto en la lista de
 	 * nodos de coordenadas.
 	 * En la lista de coordenadas metemos el documento de la persona que está en esa
-	 * coordenada
-	 * en un instante
+	 * coordenada en un instante
 	 */
 	public void insertarNodoTemporal(PosicionPersona p) {
 		NodoTemporal aux = lista, ant = null;
 		boolean salir = false, encontrado = false;
-		/**
-		 * Busco la posición adecuada donde meter el nodo de la lista, excepto
-		 * que esté en la lista. Entonces solo añadimos una coordenada.
-		 */
 		while (aux != null && !salir) {
 			if (aux.getFecha().compareTo(p.getFechaPosicion()) == 0) {
 				encontrado = true;
 				salir = true;
-				/**
-				 * Insertamos en la lista de coordenadas
-				 */
-				NodoPosicion npActual = aux.getListaCoordenadas();
-				NodoPosicion npAnt = null;
-				boolean npEncontrado = false;
-				while (npActual != null && !npEncontrado) {
-					if (npActual.getCoordenada().equals(p.getCoordenada())) {
-						npEncontrado = true;
-						npActual.setNumPersonas(npActual.getNumPersonas() + 1);
-					} else {
-						npAnt = npActual;
-						npActual = npActual.getSiguiente();
-					}
-				}
-				if (!npEncontrado) {
-					NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(), 1, null);
-					if (aux.getListaCoordenadas() == null)
-						aux.setListaCoordenadas(npNuevo);
-					else
-						npAnt.setSiguiente(npNuevo);
-				}
+				insertarNodoPosicion(aux, p);
 			} else if (aux.getFecha().compareTo(p.getFechaPosicion()) < 0) {
 				ant = aux;
 				aux = aux.getSiguiente();
@@ -54,44 +28,51 @@ public class ListaContactos {
 				salir = true;
 			}
 		}
-		/**
-		 * No hemos encontrado ninguna posición temporal, así que
-		 * metemos un nodo nuevo en la lista
-		 */
 		if (!encontrado) {
-			NodoTemporal nuevo = new NodoTemporal();
-			nuevo.setFecha(p.getFechaPosicion());
-
-			NodoPosicion npActual = nuevo.getListaCoordenadas();
-			NodoPosicion npAnt = null;
-			boolean npEncontrado = false;
-			while (npActual != null && !npEncontrado) {
-				if (npActual.getCoordenada().equals(p.getCoordenada())) {
-					npEncontrado = true;
-					npActual.setNumPersonas(npActual.getNumPersonas() + 1);
-				} else {
-					npAnt = npActual;
-					npActual = npActual.getSiguiente();
-				}
-			}
-			if (!npEncontrado) {
-				NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(), 1, null);
-				if (nuevo.getListaCoordenadas() == null)
-					nuevo.setListaCoordenadas(npNuevo);
-				else
-					npAnt.setSiguiente(npNuevo);
-			}
-
-			if (ant != null) {
-				nuevo.setSiguiente(aux);
-				ant.setSiguiente(nuevo);
-			} else {
-				nuevo.setSiguiente(lista);
-				lista = nuevo;
-			}
-			this.size++;
-
+			insertarNuevoNodo(ant, aux, p);
 		}
+	}
+
+	/**
+	 * Insertamos en la lista de coordenadas
+	 */
+	private void insertarNodoPosicion(NodoTemporal nodo, PosicionPersona p) {
+		NodoPosicion npActual = nodo.getListaCoordenadas();
+		NodoPosicion npAnt = null;
+		boolean npEncontrado = false;
+		while (npActual != null && !npEncontrado) {
+			if (npActual.getCoordenada().equals(p.getCoordenada())) {
+				npEncontrado = true;
+				npActual.setNumPersonas(npActual.getNumPersonas() + 1);
+			} else {
+				npAnt = npActual;
+				npActual = npActual.getSiguiente();
+			}
+		}
+		if (!npEncontrado) {
+			NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(), 1, null);
+			if (nodo.getListaCoordenadas() == null)
+				nodo.setListaCoordenadas(npNuevo);
+			else
+				npAnt.setSiguiente(npNuevo);
+		}
+	}
+
+	/*
+	 * Metemos un nodo nuevo en la lista
+	 */
+	private void insertarNuevoNodo(NodoTemporal prev, NodoTemporal next, PosicionPersona p) {
+		NodoTemporal nuevo = new NodoTemporal();
+		nuevo.setFecha(p.getFechaPosicion());
+		insertarNodoPosicion(nuevo, p);
+		if (prev != null) {
+			nuevo.setSiguiente(next);
+			prev.setSiguiente(nuevo);
+		} else {
+			nuevo.setSiguiente(lista);
+			lista = nuevo;
+		}
+		this.size++;
 	}
 
 	public int personasEnCoordenadas() {
@@ -114,38 +95,22 @@ public class ListaContactos {
 
 	public String getPrimerNodo() {
 		NodoTemporal aux = lista;
-		String cadena = aux.getFecha().getFecha().toString();
-		cadena += ";" + aux.getFecha().getHora().toString();
-		return cadena;
+		StringBuilder builder = new StringBuilder();
+		builder.append(aux.getFecha().getFecha().toString());
+		builder.append(";");
+		builder.append(aux.getFecha().getHora().toString());
+		return builder.toString();
 	}
 
-	/**
-	 * Métodos para comprobar que insertamos de manera correcta en las listas de
-	 * coordenadas, no tienen una utilidad en sí misma, más allá de comprobar que
-	 * nuestra lista funciona de manera correcta.
-	 */
 	public int numPersonasEntreDosInstantes(FechaHora inicio, FechaHora fin) {
-		if (this.size == 0)
-			return 0;
-		NodoTemporal aux = lista;
-		int cont = 0;
-		cont = 0;
-		while (aux != null) {
-			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
-				NodoPosicion nodo = aux.getListaCoordenadas();
-				while (nodo != null) {
-					cont = cont + nodo.getNumPersonas();
-					nodo = nodo.getSiguiente();
-				}
-				aux = aux.getSiguiente();
-			} else {
-				aux = aux.getSiguiente();
-			}
-		}
-		return cont;
+		return numEntreDosInstantes(true, inicio, fin);
 	}
 
 	public int numNodosCoordenadaEntreDosInstantes(FechaHora inicio, FechaHora fin) {
+		return numEntreDosInstantes(false, inicio, fin);
+	}
+
+	private int numEntreDosInstantes(boolean personas, FechaHora inicio, FechaHora fin) {
 		if (this.size == 0)
 			return 0;
 		NodoTemporal aux = lista;
@@ -155,7 +120,10 @@ public class ListaContactos {
 			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
 				NodoPosicion nodo = aux.getListaCoordenadas();
 				while (nodo != null) {
-					cont = cont + 1;
+					if (personas)
+						cont = cont + nodo.getNumPersonas();
+					else
+						cont = cont + 1;
 					nodo = nodo.getSiguiente();
 				}
 				aux = aux.getSiguiente();
@@ -168,18 +136,21 @@ public class ListaContactos {
 
 	@Override
 	public String toString() {
-		String cadena = "";
+		StringBuilder builder = new StringBuilder();
 		int cont;
 		cont = 0;
 		NodoTemporal aux = lista;
 		for (cont = 1; cont < size; cont++) {
-			cadena += aux.getFecha().getFecha().toString();
-			cadena += ";" + aux.getFecha().getHora().toString() + " ";
+			builder.append(aux.getFecha().getFecha().toString());
+			builder.append(";");
+			builder.append(aux.getFecha().getHora().toString());
+			builder.append(" ");
 			aux = aux.getSiguiente();
 		}
-		cadena += aux.getFecha().getFecha().toString();
-		cadena += ";" + aux.getFecha().getHora().toString();
-		return cadena;
+		builder.append(aux.getFecha().getFecha().toString());
+		builder.append(";");
+		builder.append(aux.getFecha().getHora().toString());
+		return builder.toString();
 	}
 
 }

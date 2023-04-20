@@ -199,13 +199,11 @@ public class ContactosCovid {
 	}
 
 	private String[] dividirEntrada(String input) {
-		String[] cadenas = input.split("\\n");
-		return cadenas;
+		return input.split("\\n");
 	}
 
 	private String[] dividirLineaData(String data) {
-		String[] cadenas = data.split("\\;");
-		return cadenas;
+		return data.split("\\;");
 	}
 
 	private Persona crearPersona(String[] data) {
@@ -222,8 +220,8 @@ public class ContactosCovid {
 
 	private PosicionPersona crearPosicionPersona(String[] data) {
 		PosicionPersona posicionPersona = new PosicionPersona();
-		float latitud = 0f;
-		float longitud = 0f;
+		float latitud;
+		float longitud;
 		posicionPersona.setDocumento(data[1]);
 		String fecha = data[2];
 		String hora = data[3];

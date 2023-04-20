@@ -1,13 +1,10 @@
 package com.practica.genericas;
 
-
 public class Coordenada {
 	private float latitud, longitud;
 
-	
 	public Coordenada() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Coordenada(float latitud, float longitud) {
@@ -56,5 +53,5 @@ public class Coordenada {
 			return false;
 		return true;
 	}
-	
+
 }

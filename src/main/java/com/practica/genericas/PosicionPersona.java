@@ -40,7 +40,7 @@ public class PosicionPersona {
 				fecha.getFecha().getAnio(),
 				fecha.getHora().getHora(),
 				fecha.getHora().getMinuto()));
-		builder.append(String.format("%.4f;%.4f\n", getCoordenada().getLatitud(),
+		builder.append(String.format("%.4f;%.4f%n", getCoordenada().getLatitud(),
 				getCoordenada().getLongitud()));
 		return builder.toString();
 	}

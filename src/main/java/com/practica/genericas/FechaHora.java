@@ -65,21 +65,21 @@ public class FechaHora implements Comparable<FechaHora> {
 	}
 
 	public class Hora {
-		private int hora;
+		private int hr;
 		private int minuto;
 
-		public Hora(int hora, int minuto) {
+		public Hora(int hr, int minuto) {
 			super();
-			this.hora = hora;
+			this.hr = hr;
 			this.minuto = minuto;
 		}
 
 		public int getHora() {
-			return hora;
+			return hr;
 		}
 
-		public void setHora(int hora) {
-			this.hora = hora;
+		public void setHora(int hr) {
+			this.hr = hr;
 		}
 
 		public int getMinuto() {
@@ -92,12 +92,12 @@ public class FechaHora implements Comparable<FechaHora> {
 
 		@Override
 		public String toString() {
-			return String.format("%02d:%02d", hora, minuto);
+			return String.format("%02d:%02d", hr, minuto);
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(hora, minuto);
+			return Objects.hash(hr, minuto);
 		}
 
 		@Override
@@ -160,8 +160,8 @@ public class FechaHora implements Comparable<FechaHora> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FechaHora fecha = (FechaHora) obj;
-		return getFecha().equals(fecha.getFecha()) && getHora().equals(fecha.getHora());
+		FechaHora fechaHora = (FechaHora) obj;
+		return getFecha().equals(fechaHora.getFecha()) && getHora().equals(fechaHora.getHora());
 	}
 
 	@Override

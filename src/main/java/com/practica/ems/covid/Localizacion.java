@@ -15,7 +15,7 @@ public class Localizacion {
 	public Localizacion() {
 		super();
 		this.lista = new LinkedList<>();
-	};
+	}
 
 	public List<PosicionPersona> getLista() {
 		return lista;

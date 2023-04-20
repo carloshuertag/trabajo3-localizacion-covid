@@ -19,7 +19,7 @@ public class Principal {
 				"LOCALIZACION;87654321K;25/10/2021;23:55;41.3871;2.1697\n";
 		ContactosCovid contactosCovid = new ContactosCovid();
 		contactosCovid.loadDataFile("datos2.txt", false);
-		System.out.println(contactosCovid.getLocalizacionTag().toString());
+		System.out.println(contactosCovid.getLocalizacion().toString());
 		System.out.println(contactosCovid.getPoblacion().toString());
 		// contactosCovid.loadData("LOCALIZACION;12345678J;16/05/2021;20:45;54.3890;28.1698\n",
 		// false);

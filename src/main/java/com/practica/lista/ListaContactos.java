@@ -17,8 +17,9 @@ public class ListaContactos {
 	public void insertarNodoTemporal(PosicionPersona p) {
 		NodoTemporal[] search = searchPosition(p);
 		boolean found = search[1].getFecha().compareTo(p.getFechaPosicion()) == 0;
-		insertIntoCoordinates(search[1], p);
-		if (!found) {
+		if (found)
+			insertIntoCoordinates(search[1], p);
+		else {
 			NodoTemporal nuevo = addNewNode(p);
 			if (search[0] != null) {
 				nuevo.setSiguiente(search[1]);

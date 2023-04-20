@@ -166,7 +166,7 @@ public class ContactosCovid {
 
 	public List<PosicionPersona> localizacionPersona(String documento) throws EmsPersonNotFoundException {
 		int cont = 0;
-		List<PosicionPersona> lista = new ArrayList<PosicionPersona>();
+		List<PosicionPersona> lista = new ArrayList<>();
 		Iterator<PosicionPersona> it = getLocalizacion().getLista().iterator();
 		while (it.hasNext()) {
 			PosicionPersona pp = it.next();

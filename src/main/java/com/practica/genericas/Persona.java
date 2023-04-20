@@ -1,6 +1,5 @@
 package com.practica.genericas;
 
-
 public class Persona {
 	private String nombre, apellidos, documento, email, direccion, cp;
 	FechaHora fechaNacimiento;
@@ -79,20 +78,18 @@ public class Persona {
 	@Override
 	public String toString() {
 		FechaHora fecha = getFechaNacimiento();
-		String cadena = "";
+		StringBuilder builder = new StringBuilder();
 		// Documento
-		cadena += String.format("%s;", getDocumento());
+		builder.append(String.format("%s;", getDocumento()));
 		// Nombre y apellidos
-		cadena += String.format("%s,%s;", getApellidos(), getNombre());
+		builder.append(String.format("%s,%s;", getApellidos(), getNombre()));
 		// correo electrónico
-		cadena += String.format("%s;", getEmail());
-        // Direccion y código postal
-		cadena += String.format("%s,%s;", getDireccion(), getCp());
-        // Fecha de nacimiento
-		cadena+=String.format("%02d/%02d/%04d\n", fecha.getFecha().getDia(), 
-        		fecha.getFecha().getMes(), 
-        		fecha.getFecha().getAnio());
-
-		return cadena;
+		builder.append(String.format("%s;", getEmail()));
+		// Direccion y código postal
+		builder.append(String.format("%s,%s;", getDireccion(), getCp()));
+		// Fecha de nacimiento
+		builder.append(String.format("%02d/%02d/%04d\n", fecha.getFecha().getDia(),
+				fecha.getFecha().getMes(), fecha.getFecha().getAnio()));
+		return builder.toString();
 	}
 }

@@ -24,8 +24,21 @@ public class ContactosCovid {
 	private Poblacion poblacion;
 	private Localizacion localizacion;
 	private ListaContactos listaContactos;
-	private static final String PERSONA = "PERSONA";
-	private static final String LOCALIZACION_TAG = "LOCALIZACION";
+
+	private static enum DATA_TAG {
+		PERSONA("PERSONA"),
+		LOCALIZACION("LOCALIZACION");
+
+		private final String value;
+
+		private DATA_TAG(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+	};
 
 	public ContactosCovid() {
 		this.poblacion = new Poblacion();
@@ -64,23 +77,23 @@ public class ContactosCovid {
 		String[] datas = dividirEntrada(data);
 		for (String linea : datas) {
 			String datos[] = this.dividirLineaData(linea);
-			if (!datos[0].equals(PERSONA) && !datos[0].equals(LOCALIZACION_TAG)) {
-				throw new EmsInvalidTypeException();
-			}
-			if (datos[0].equals(PERSONA)) {
-				if (datos.length != Constantes.MAX_DATOS_PERSONA) {
+			if (datos[0].equals(DATA_TAG.PERSONA.getValue())) {
+				if (datos.length != Constantes.MAX_DATOS_PERSONA.getValue()) {
 					throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
 				}
 				getPoblacion().addPersona(this.crearPersona(datos));
+				continue;
 			}
-			if (datos[0].equals(LOCALIZACION_TAG)) {
-				if (datos.length != Constantes.MAX_DATOS_LOCALIZACION) {
+			if (datos[0].equals(DATA_TAG.LOCALIZACION.getValue())) {
+				if (datos.length != Constantes.MAX_DATOS_LOCALIZACION.getValue()) {
 					throw new EmsInvalidNumberOfDataException("El número de datos para LOCALIZACION es menor de 6");
 				}
 				PosicionPersona pp = this.crearPosicionPersona(datos);
 				getLocalizacion().addLocalizacion(pp);
 				getListaContactos().insertarNodoTemporal(pp);
+				continue;
 			}
+			throw new EmsInvalidTypeException();
 		}
 	}
 
@@ -122,24 +135,25 @@ public class ContactosCovid {
 		String[] datas = dividirEntrada(fileLine.trim());
 		for (String linea : datas) {
 			String[] data = this.dividirLineaData(linea);
-			if (!data[0].equals(PERSONA) && !data[0].equals(LOCALIZACION_TAG)) {
-				throw new EmsInvalidTypeException();
-			}
-			if (data[0].equals(PERSONA)) {
-				if (data.length != Constantes.MAX_DATOS_PERSONA) {
-					throw new EmsInvalidNumberOfDataException("El número de datos para PERSONA es menor de 8");
+			if (data[0].equals(DATA_TAG.PERSONA.getValue())) {
+				if (data.length != Constantes.MAX_DATOS_PERSONA.getValue()) {
+					throw new EmsInvalidNumberOfDataException(
+							"El número de datos para PERSONA es menor de 8");
 				}
 				getPoblacion().addPersona(this.crearPersona(data));
+				continue;
 			}
-			if (data[0].equals(LOCALIZACION_TAG)) {
-				if (data.length != Constantes.MAX_DATOS_LOCALIZACION) {
+			if (data[0].equals(DATA_TAG.LOCALIZACION.getValue())) {
+				if (data.length != Constantes.MAX_DATOS_LOCALIZACION.getValue()) {
 					throw new EmsInvalidNumberOfDataException(
 							"El número de datos para LOCALIZACION es menor de 6");
 				}
 				PosicionPersona pp = this.crearPosicionPersona(data);
 				getLocalizacion().addLocalizacion(pp);
 				getListaContactos().insertarNodoTemporal(pp);
+				continue;
 			}
+			throw new EmsInvalidTypeException();
 		}
 	}
 
@@ -181,18 +195,17 @@ public class ContactosCovid {
 	}
 
 	public boolean delPersona(String documento) throws EmsPersonNotFoundException {
-		int cont = 0, pos = -1;
+		int cont = 0;
+		int pos = -1;
 		Iterator<Persona> it = this.poblacion.getLista().iterator();
 		while (it.hasNext()) {
 			Persona persona = it.next();
-			if (persona.getDocumento().equals(documento)) {
+			if (persona.getDocumento().equals(documento))
 				pos = cont;
-			}
 			cont++;
 		}
-		if (pos == -1) {
+		if (pos == -1)
 			throw new EmsPersonNotFoundException();
-		}
 		this.poblacion.getLista().remove(pos);
 		return false;
 	}

@@ -1,7 +1,28 @@
 package com.practica.genericas;
 
+public enum Constantes {
 
-public interface Constantes {
-	public int MAX_DATOS_PERSONA = 8;
-	public int MAX_DATOS_LOCALIZACION = 6;
+	MAX_DATOS_PERSONA(8),
+	MAX_DATOS_LOCALIZACION(6);
+
+	private final String key;
+	private final int value;
+
+	Constantes(String key) {
+		this.key = key;
+		this.value = 0;
+	}
+
+	Constantes(int value) {
+		this.key = null;
+		this.value = value;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public int getValue() {
+		return value;
+	}
 }

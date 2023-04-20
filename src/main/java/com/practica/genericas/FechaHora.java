@@ -174,4 +174,23 @@ public class FechaHora implements Comparable<FechaHora> {
 		return thisDateTime.compareTo(otherDateTime);
 	}
 
+	public static FechaHora parseDateTime(String fecha) {
+		String[] valores = fecha.split("\\/");
+		int dia = Integer.parseInt(valores[0]);
+		int mes = Integer.parseInt(valores[1]);
+		int anio = Integer.parseInt(valores[2]);
+		return new FechaHora(dia, mes, anio, 0, 0);
+	}
+
+	public static FechaHora parseDateTime(String fecha, String hora) {
+		String[] valores = fecha.split("\\/");
+		int dia = Integer.parseInt(valores[0]);
+		int mes = Integer.parseInt(valores[1]);
+		int anio = Integer.parseInt(valores[2]);
+		valores = hora.split("\\:");
+		int minuto = Integer.parseInt(valores[0]);
+		int segundo = Integer.parseInt(valores[1]);
+		return new FechaHora(dia, mes, anio, minuto, segundo);
+	}
+
 }

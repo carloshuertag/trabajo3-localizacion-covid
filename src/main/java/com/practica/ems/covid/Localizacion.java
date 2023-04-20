@@ -41,7 +41,7 @@ public class Localizacion {
 		while (it.hasNext()) {
 			cont++;
 			PosicionPersona pp = it.next();
-			FechaHora fechaHora = this.parsearFecha(fecha, hora);
+			FechaHora fechaHora = FechaHora.parseDateTime(fecha, hora);
 			if (pp.getDocumento().equals(documento) &&
 					pp.getFechaPosicion().equals(fechaHora)) {
 				return cont;
@@ -73,29 +73,6 @@ public class Localizacion {
 		StringBuilder builder = new StringBuilder();
 		lista.forEach(builder::append);
 		return builder.toString();
-	}
-
-	@SuppressWarnings("unused")
-	private FechaHora parsearFecha(String fecha) {
-		int dia, mes, anio;
-		String[] valores = fecha.split("\\/");
-		dia = Integer.parseInt(valores[0]);
-		mes = Integer.parseInt(valores[1]);
-		anio = Integer.parseInt(valores[2]);
-		return new FechaHora(dia, mes, anio, 0, 0);
-	}
-
-	private FechaHora parsearFecha(String fecha, String hora) {
-		int dia, mes, anio;
-		String[] valores = fecha.split("\\/");
-		dia = Integer.parseInt(valores[0]);
-		mes = Integer.parseInt(valores[1]);
-		anio = Integer.parseInt(valores[2]);
-		int minuto, segundo;
-		valores = hora.split("\\:");
-		minuto = Integer.parseInt(valores[0]);
-		segundo = Integer.parseInt(valores[1]);
-		return new FechaHora(dia, mes, anio, minuto, segundo);
 	}
 
 }

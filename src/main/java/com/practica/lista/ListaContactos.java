@@ -116,21 +116,27 @@ public class ListaContactos {
 		if (this.size == 0)
 			return 0;
 		NodoTemporal aux = lista;
-		int cont = 0;
+		int count = 0;
 		while (aux != null)
 			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
-				NodoPosicion nodo = aux.getListaCoordenadas();
-				while (nodo != null) {
-					if (personas)
-						cont = cont + nodo.getNumPersonas();
-					else
-						cont = cont + 1;
-					nodo = nodo.getSiguiente();
-				}
+				count += getNodoPosicionCount(personas, inicio, fin, aux);
 				aux = aux.getSiguiente();
 			} else
 				aux = aux.getSiguiente();
-		return cont;
+		return count;
+	}
+
+	private int getNodoPosicionCount(boolean personas, FechaHora inicio, FechaHora fin, NodoTemporal node) {
+		int count = 0;
+		NodoPosicion current = node.getListaCoordenadas();
+		while (current != null) {
+			if (personas)
+				count += current.getNumPersonas();
+			else
+				count += 1;
+			current = current.getSiguiente();
+		}
+		return count;
 	}
 
 	@Override

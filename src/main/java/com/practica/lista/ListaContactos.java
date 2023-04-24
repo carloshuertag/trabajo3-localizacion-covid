@@ -119,14 +119,14 @@ public class ListaContactos {
 		int count = 0;
 		while (aux != null)
 			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
-				count += getNodoPosicionCount(personas, inicio, fin, aux);
+				count += getNodoPosicionCount(personas, aux);
 				aux = aux.getSiguiente();
 			} else
 				aux = aux.getSiguiente();
 		return count;
 	}
 
-	private int getNodoPosicionCount(boolean personas, FechaHora inicio, FechaHora fin, NodoTemporal node) {
+	private int getNodoPosicionCount(boolean personas, NodoTemporal node) {
 		int count = 0;
 		NodoPosicion current = node.getListaCoordenadas();
 		while (current != null) {

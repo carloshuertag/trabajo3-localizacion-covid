@@ -20,24 +20,28 @@ public class Test_1 {
 
 	private static ContactosCovid contactosCovid;
 
+	private String testDataString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(
+				"PERSONA;12121212R;Jessica;Diaz;jessica.diaz@ems.com;La calle de Jessica, 33;28033;25/01/1980\n");
+		builder.append("PERSONA;98765432J;Angel;Panizo;angel.panizo@ems.com;La calle de Angel, 46;28871;12/01/1995\n");
+		builder.append("LOCALIZACION;12121212R;25/10/2021;23:41;91.3970;12.1687\n");
+		builder.append("LOCALIZACION;12121212R;25/10/2021;23:45;91.3970;12.1695\n");
+		builder.append("LOCALIZACION;98765432J;25/10/2021;23:55;91.3971;12.1699\n");
+		builder.append("LOCALIZACION;12121212R;25/10/2021;23:55;91.3971;12.1699\n");
+		return builder.toString();
+	}
+
 	@BeforeEach
 	void setUp() {
-		String test_data_str = "PERSONA;12121212R;Jessica;Diaz;jessica.diaz@ems.com;La calle de Jessica, 33;28033;25/01/1980\n"
-				+ "PERSONA;98765432J;Angel;Panizo;angel.panizo@ems.com;La calle de Angel, 46;28871;12/01/1995\n"
-				+ "LOCALIZACION;12121212R;25/10/2021;23:41;91.3970;12.1687\n"
-				+ "LOCALIZACION;12121212R;25/10/2021;23:45;91.3970;12.1695\n"
-				+ "LOCALIZACION;98765432J;25/10/2021;23:55;91.3971;12.1699\n"
-				+ "LOCALIZACION;12121212R;25/10/2021;23:55;91.3971;12.1699\n";
+		String test_data_str = testDataString();
 		contactosCovid = new ContactosCovid();
-
 		try {
 			contactosCovid.loadData(test_data_str, false);
 		} catch (EmsInvalidTypeException | EmsInvalidNumberOfDataException | EmsDuplicatePersonException
 				| EmsDuplicateLocationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	@DisplayName("Aniade una entrada con un tipo no valido")

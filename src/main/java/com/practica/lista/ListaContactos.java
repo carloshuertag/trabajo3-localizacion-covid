@@ -98,9 +98,9 @@ public class ListaContactos {
 	public String getPrimerNodo() {
 		NodoTemporal aux = lista;
 		StringBuilder builder = new StringBuilder();
-		builder.append(aux.getFecha().getFecha().toString());
+		builder.append(aux.getFecha().getFecha());
 		builder.append(";");
-		builder.append(aux.getFecha().getHora().toString());
+		builder.append(aux.getFecha().getHora());
 		return builder.toString();
 	}
 
@@ -145,15 +145,15 @@ public class ListaContactos {
 		int cont = 0;
 		NodoTemporal aux = lista;
 		for (cont = 1; cont < size; cont++) {
-			builder.append(aux.getFecha().getFecha().toString());
+			builder.append(aux.getFecha().getFecha());
 			builder.append(";");
-			builder.append(aux.getFecha().getHora().toString());
+			builder.append(aux.getFecha().getHora());
 			builder.append(" ");
 			aux = aux.getSiguiente();
 		}
-		builder.append(aux.getFecha().getFecha().toString());
+		builder.append(aux.getFecha().getFecha());
 		builder.append(";");
-		builder.append(aux.getFecha().getHora().toString());
+		builder.append(aux.getFecha().getHora());
 		return builder.toString();
 	}
 

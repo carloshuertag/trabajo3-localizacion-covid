@@ -174,6 +174,11 @@ public class FechaHora implements Comparable<FechaHora> {
 		return thisDateTime.compareTo(otherDateTime);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s;%s", fecha, hora);
+	}
+
 	public static FechaHora parseDateTime(String fecha) {
 		String[] valores = fecha.split("\\/");
 		int dia = Integer.parseInt(valores[0]);

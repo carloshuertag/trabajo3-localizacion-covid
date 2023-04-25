@@ -18,7 +18,7 @@ public class ListaContactos {
 		NodoTemporal prev = null;
 		boolean end = false;
 		boolean exists = false;
-		while (currentNode != null && !end) {
+		while (currentNode != null && !end)
 			if (currentNode.getFecha().compareTo(p.getFechaPosicion()) == 0) {
 				exists = true;
 				end = true;
@@ -26,13 +26,10 @@ public class ListaContactos {
 			} else if (currentNode.getFecha().compareTo(p.getFechaPosicion()) < 0) {
 				prev = currentNode;
 				currentNode = currentNode.getSiguiente();
-			} else if (currentNode.getFecha().compareTo(p.getFechaPosicion()) > 0) {
+			} else if (currentNode.getFecha().compareTo(p.getFechaPosicion()) > 0)
 				end = true;
-			}
-		}
-		if (!exists) {
+		if (!exists)
 			insertarNuevoNodo(prev, currentNode, p);
-		}
 	}
 
 	/**
@@ -42,7 +39,7 @@ public class ListaContactos {
 		NodoPosicion current = node.getListaCoordenadas();
 		NodoPosicion prev = null;
 		boolean exists = false;
-		while (current != null && !exists) {
+		while (current != null && !exists)
 			if (current.getCoordenada().equals(p.getCoordenada())) {
 				exists = true;
 				current.setNumPersonas(current.getNumPersonas() + 1);
@@ -50,7 +47,6 @@ public class ListaContactos {
 				prev = current;
 				current = current.getSiguiente();
 			}
-		}
 		if (!exists) {
 			NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(), 1, null);
 			if (node.getListaCoordenadas() == null)
@@ -96,12 +92,7 @@ public class ListaContactos {
 	}
 
 	public String getPrimerNodo() {
-		NodoTemporal aux = lista;
-		StringBuilder builder = new StringBuilder();
-		builder.append(aux.getFecha().getFecha());
-		builder.append(";");
-		builder.append(aux.getFecha().getHora());
-		return builder.toString();
+		return lista.getFecha().toString();
 	}
 
 	public int numPersonasEntreDosInstantes(FechaHora inicio, FechaHora fin) {
@@ -145,15 +136,11 @@ public class ListaContactos {
 		int cont = 0;
 		NodoTemporal aux = lista;
 		for (cont = 1; cont < size; cont++) {
-			builder.append(aux.getFecha().getFecha());
-			builder.append(";");
-			builder.append(aux.getFecha().getHora());
+			builder.append(aux.getFecha());
 			builder.append(" ");
 			aux = aux.getSiguiente();
 		}
-		builder.append(aux.getFecha().getFecha());
-		builder.append(";");
-		builder.append(aux.getFecha().getHora());
+		builder.append(aux.getFecha());
 		return builder.toString();
 	}
 

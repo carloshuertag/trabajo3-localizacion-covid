@@ -54,7 +54,7 @@ public class Poblacion {
 		while (it.hasNext()) {
 			Persona persona = it.next();
 			cont++;
-			if (persona.getDocumento().equals(documento)) {
+			if (documento.equals(persona.getDocumento())) {
 				return cont;
 			}
 		}

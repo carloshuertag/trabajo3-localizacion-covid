@@ -32,16 +32,12 @@ public class PosicionPersona {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(String.format("%s;", getDocumento()));
+		builder.append(getDocumento());
+		builder.append(";");
 		FechaHora fecha = getFechaPosicion();
-		builder.append(String.format("%02d/%02d/%04d;%02d:%02d;",
-				fecha.getFecha().getDia(),
-				fecha.getFecha().getMes(),
-				fecha.getFecha().getAnio(),
-				fecha.getHora().getHora(),
-				fecha.getHora().getMinuto()));
-		builder.append(String.format("%.4f;%.4f%n", getCoordenada().getLatitud(),
-				getCoordenada().getLongitud()));
+		builder.append(fecha);
+		builder.append(";");
+		builder.append(coordenada);
 		return builder.toString();
 	}
 

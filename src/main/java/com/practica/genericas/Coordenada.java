@@ -52,4 +52,9 @@ public class Coordenada {
 		return Float.floatToIntBits(longitud) == Float.floatToIntBits(other.longitud);
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%.4f;%.4f%n", latitud, longitud);
+	}
+
 }

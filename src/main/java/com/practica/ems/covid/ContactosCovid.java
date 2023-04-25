@@ -166,7 +166,7 @@ public class ContactosCovid {
 		Iterator<PosicionPersona> it = getLocalizacion().getLista().iterator();
 		while (it.hasNext()) {
 			PosicionPersona pp = it.next();
-			if (pp.getDocumento().equals(documento)) {
+			if (documento.equals(pp.getDocumento())) {
 				cont++;
 				lista.add(pp);
 			}
@@ -183,7 +183,7 @@ public class ContactosCovid {
 		Iterator<Persona> it = this.poblacion.getLista().iterator();
 		while (it.hasNext()) {
 			Persona persona = it.next();
-			if (persona.getDocumento().equals(documento))
+			if (documento.equals(persona.getDocumento()))
 				pos = cont;
 			cont++;
 		}

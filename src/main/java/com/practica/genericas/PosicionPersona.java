@@ -5,6 +5,14 @@ public class PosicionPersona {
 	private String documento;
 	private FechaHora fechaPosicion;
 
+	public static PosicionPersona parsePosicionPersona(String[] data) {
+		PosicionPersona posicionPersona = new PosicionPersona();
+		posicionPersona.setDocumento(data[1]);
+		posicionPersona.setFechaPosicion(FechaHora.parseDateTime(data[2], data[3]));
+		posicionPersona.setCoordenada(Coordenada.parseCoordenada(data[4], data[5]));
+		return posicionPersona;
+	}
+
 	public Coordenada getCoordenada() {
 		return coordenada;
 	}

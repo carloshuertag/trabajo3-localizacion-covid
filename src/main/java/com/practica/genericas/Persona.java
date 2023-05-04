@@ -9,6 +9,18 @@ public class Persona {
 	private String cp;
 	FechaHora fechaNacimiento;
 
+	public static Persona parsePersona(String[] data) {
+		Persona persona = new Persona();
+		persona.setDocumento(data[1]);
+		persona.setNombre(data[2]);
+		persona.setApellidos(data[3]);
+		persona.setEmail(data[4]);
+		persona.setDireccion(data[5]);
+		persona.setCp(data[6]);
+		persona.setFechaNacimiento(FechaHora.parseDateTime(data[7]));
+		return persona;
+	}
+
 	public Persona() {
 	}
 
@@ -83,15 +95,10 @@ public class Persona {
 	public String toString() {
 		FechaHora fecha = getFechaNacimiento();
 		StringBuilder builder = new StringBuilder();
-		// Documento
 		builder.append(String.format("%s;", getDocumento()));
-		// Nombre y apellidos
 		builder.append(String.format("%s,%s;", getApellidos(), getNombre()));
-		// correo electrónico
 		builder.append(String.format("%s;", getEmail()));
-		// Direccion y código postal
 		builder.append(String.format("%s,%s;", getDireccion(), getCp()));
-		// Fecha de nacimiento
 		builder.append(String.format("%02d/%02d/%04d%n", fecha.getFecha().getDia(),
 				fecha.getFecha().getMes(), fecha.getFecha().getAnio()));
 		return builder.toString();

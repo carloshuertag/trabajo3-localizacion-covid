@@ -4,6 +4,14 @@ public class Coordenada {
 	private float latitud;
 	private float longitud;
 
+	public static Coordenada parseCoordenada(String latitudStr, String longitudStr) {
+		float latitud;
+		float longitud;
+		latitud = Float.parseFloat(latitudStr);
+		longitud = Float.parseFloat(longitudStr);
+		return new Coordenada(latitud, longitud);
+	}
+
 	public Coordenada() {
 	}
 

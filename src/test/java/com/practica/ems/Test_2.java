@@ -87,7 +87,6 @@ public class Test_2 {
 			Assertions.assertEquals(3, contactosCovid.findPersona("12345678J"));
 		} catch (EmsInvalidTypeException | EmsInvalidNumberOfDataException | EmsDuplicatePersonException
 				| EmsDuplicateLocationException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Error al cargar una persona valida");
 		}
 	}
@@ -100,7 +99,6 @@ public class Test_2 {
 			Assertions.assertEquals(5, contactosCovid.findLocalizacion("12345678J", "16/05/2021", "20:45"));
 		} catch (EmsInvalidTypeException | EmsInvalidNumberOfDataException | EmsDuplicatePersonException
 				| EmsDuplicateLocationException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Error al cargar una localizacion valida");
 		}
 	}

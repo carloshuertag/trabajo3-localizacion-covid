@@ -14,7 +14,6 @@ import com.practica.excecption.EmsInvalidTypeException;
 import com.practica.excecption.EmsLocalizationNotFoundException;
 import com.practica.excecption.EmsPersonNotFoundException;
 import com.practica.genericas.Constantes;
-import com.practica.genericas.FechaHora;
 import com.practica.genericas.Persona;
 import com.practica.genericas.PosicionPersona;
 import com.practica.lista.ListaContactos;
@@ -122,7 +121,7 @@ public class ContactosCovid {
 				throw new EmsInvalidNumberOfDataException(
 						"El número de datos para PERSONA es menor de 8");
 			}
-			getPoblacion().addPersona(this.crearPersona(data));
+			getPoblacion().addPersona(Persona.parsePersona(data));
 			return;
 		}
 		if (data[0].equals(DATA_TAG.LOCALIZACION.getValue())) {
@@ -197,18 +196,6 @@ public class ContactosCovid {
 
 	private String[] dividirLineaData(String data) {
 		return data.split("\\;");
-	}
-
-	private Persona crearPersona(String[] data) {
-		Persona persona = new Persona();
-		persona.setDocumento(data[1]);
-		persona.setNombre(data[2]);
-		persona.setApellidos(data[3]);
-		persona.setEmail(data[4]);
-		persona.setDireccion(data[5]);
-		persona.setCp(data[6]);
-		persona.setFechaNacimiento(FechaHora.parseDateTime(data[7]));
-		return persona;
 	}
 
 }

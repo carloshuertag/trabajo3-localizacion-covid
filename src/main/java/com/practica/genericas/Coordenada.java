@@ -15,6 +15,11 @@ public class Coordenada {
 	public Coordenada() {
 	}
 
+	public Coordenada(Coordenada c) {
+		this.latitud = c.latitud;
+		this.longitud = c.longitud;
+	}
+
 	public Coordenada(float latitud, float longitud) {
 		super();
 		this.latitud = latitud;

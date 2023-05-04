@@ -99,8 +99,7 @@ public class Persona {
 		builder.append(String.format("%s,%s;", getApellidos(), getNombre()));
 		builder.append(String.format("%s;", getEmail()));
 		builder.append(String.format("%s,%s;", getDireccion(), getCp()));
-		builder.append(String.format("%02d/%02d/%04d%n", fecha.getFecha().getDia(),
-				fecha.getFecha().getMes(), fecha.getFecha().getAnio()));
+		builder.append(String.format("%s%n", fecha.getFecha()));
 		return builder.toString();
 	}
 }

@@ -1,11 +1,34 @@
 package com.practica.lista;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.practica.genericas.FechaHora;
 import com.practica.genericas.PosicionPersona;
 
 public class ListaContactos {
-	private NodoTemporal lista;
-	private int size;
+	private List<NodoTemporal> lista;
+
+	public ListaContactos() {
+		super();
+		lista = new LinkedList<>();
+	}
+
+	private void insertAt(NodoTemporal nt) throws IllegalArgumentException {
+		if (lista.contains(nt)) {
+			throw new IllegalArgumentException("Date is already in the list");
+		}
+		int index = 0;
+		for (NodoTemporal actual : lista) {
+			if (nt.compareTo(actual) < 0)
+				break;
+			index++;
+		}
+		if (index == lista.size())
+			lista.add(nt);
+		else
+			lista.add(index, nt);
+	}
 
 	/**
 	 * Insertamos en la lista de nodos temporales, y a la vez inserto en la lista de
@@ -14,134 +37,43 @@ public class ListaContactos {
 	 * coordenada en un instante
 	 */
 	public void insertarNodoTemporal(PosicionPersona p) {
-		NodoTemporal currentNode = lista;
-		NodoTemporal prev = null;
-		boolean end = false;
-		boolean exists = false;
-		while (currentNode != null && !end)
-			if (currentNode.getFecha().compareTo(p.getFechaPosicion()) == 0) {
-				exists = true;
-				end = true;
-				insertarNodoPosicion(currentNode, p);
-			} else if (currentNode.getFecha().compareTo(p.getFechaPosicion()) < 0) {
-				prev = currentNode;
-				currentNode = currentNode.getSiguiente();
-			} else if (currentNode.getFecha().compareTo(p.getFechaPosicion()) > 0)
-				end = true;
-		if (!exists)
-			insertarNuevoNodo(prev, currentNode, p);
-	}
-
-	/**
-	 * Insertamos en la lista de coordenadas
-	 */
-	private void insertarNodoPosicion(NodoTemporal node, PosicionPersona p) {
-		NodoPosicion current = node.getListaCoordenadas();
-		NodoPosicion prev = null;
-		boolean exists = false;
-		while (current != null && !exists)
-			if (current.getCoordenada().equals(p.getCoordenada())) {
-				exists = true;
-				current.setNumPersonas(current.getNumPersonas() + 1);
-			} else {
-				prev = current;
-				current = current.getSiguiente();
-			}
-		if (!exists) {
-			NodoPosicion npNuevo = new NodoPosicion(p.getCoordenada(), 1, null);
-			if (node.getListaCoordenadas() == null)
-				node.setListaCoordenadas(npNuevo);
-			else if (prev != null)
-				prev.setSiguiente(npNuevo);
+		NodoTemporal newNodoTemporal = NodoTemporal.fromPosicionPersona(p);
+		if (lista.isEmpty()) {
+			lista.add(newNodoTemporal);
+			return;
 		}
-	}
-
-	/*
-	 * Metemos un nodo nuevo en la lista
-	 */
-	private void insertarNuevoNodo(NodoTemporal prev, NodoTemporal next, PosicionPersona p) {
-		NodoTemporal newNode = new NodoTemporal();
-		newNode.setFecha(p.getFechaPosicion());
-		insertarNodoPosicion(newNode, p);
-		if (prev != null) {
-			newNode.setSiguiente(next);
-			prev.setSiguiente(newNode);
-		} else {
-			newNode.setSiguiente(lista);
-			lista = newNode;
-		}
-		this.size++;
-	}
-
-	public int personasEnCoordenadas() {
-		NodoPosicion aux = this.lista.getListaCoordenadas();
-		if (aux == null)
-			return 0;
-		else {
-			int cont;
-			for (cont = 0; aux != null;) {
-				cont += aux.getNumPersonas();
-				aux = aux.getSiguiente();
-			}
-			return cont;
-		}
+		int index = lista.indexOf(newNodoTemporal);
+		if (index == -1)
+			insertAt(newNodoTemporal);
+		else
+			lista.get(index).combine(newNodoTemporal);
 	}
 
 	public int tamanioLista() {
-		return this.size;
+		return lista.size();
 	}
 
 	public String getPrimerNodo() {
-		return lista.getFecha().toString();
+		return lista.get(0).getFecha().toString();
 	}
 
 	public int numPersonasEntreDosInstantes(FechaHora inicio, FechaHora fin) {
-		return numEntreDosInstantes(true, inicio, fin);
+		return lista.stream().filter(nt -> nt.isBetween(inicio, fin)).mapToInt(NodoTemporal::getNumPersonas).sum();
 	}
 
 	public int numNodosCoordenadaEntreDosInstantes(FechaHora inicio, FechaHora fin) {
-		return numEntreDosInstantes(false, inicio, fin);
-	}
-
-	private int numEntreDosInstantes(boolean personas, FechaHora inicio, FechaHora fin) {
-		if (this.size == 0)
-			return 0;
-		NodoTemporal aux = lista;
-		int count = 0;
-		while (aux != null)
-			if (aux.getFecha().compareTo(inicio) >= 0 && aux.getFecha().compareTo(fin) <= 0) {
-				count += getNodoPosicionCount(personas, aux);
-				aux = aux.getSiguiente();
-			} else
-				aux = aux.getSiguiente();
-		return count;
-	}
-
-	private int getNodoPosicionCount(boolean personas, NodoTemporal node) {
-		int count = 0;
-		NodoPosicion current = node.getListaCoordenadas();
-		while (current != null) {
-			if (personas)
-				count += current.getNumPersonas();
-			else
-				count += 1;
-			current = current.getSiguiente();
-		}
-		return count;
+		return lista.stream().filter(nt -> nt.isBetween(inicio, fin)).mapToInt(nt -> nt.getListaCoordenadas().size())
+				.sum();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		int cont = 0;
-		NodoTemporal aux = lista;
-		for (cont = 1; cont < size; cont++) {
-			builder.append(aux.getFecha());
+		lista.forEach(nt -> {
+			builder.append(nt.getFecha());
 			builder.append(" ");
-			aux = aux.getSiguiente();
-		}
-		builder.append(aux.getFecha());
-		return builder.toString();
+		});
+		return builder.toString().trim();
 	}
 
 }

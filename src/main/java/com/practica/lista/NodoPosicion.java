@@ -1,6 +1,7 @@
 package com.practica.lista;
 
 import com.practica.genericas.Coordenada;
+import com.practica.genericas.PosicionPersona;
 
 /**
  * Nodo para la lista de coordenadas. En el guardamos cuántas personas están
@@ -11,18 +12,24 @@ import com.practica.genericas.Coordenada;
 public class NodoPosicion {
 	private Coordenada coordenada;
 	private int numPersonas;
-	private NodoPosicion siguiente;
+
+	public static NodoPosicion fromPosicionPersona(PosicionPersona pp) {
+		return new NodoPosicion(pp.getCoordenada(), 1);
+	}
 
 	public NodoPosicion() {
 		super();
-		siguiente = null;
 	}
 
-	public NodoPosicion(Coordenada coordenada, int numPersonas, NodoPosicion siguiente) {
+	public NodoPosicion(Coordenada coordenada, int numPersonas) {
 		super();
 		this.coordenada = coordenada;
 		this.numPersonas = numPersonas;
-		this.siguiente = siguiente;
+	}
+
+	public NodoPosicion(NodoPosicion np) {
+		this.coordenada = new Coordenada(np.getCoordenada());
+		this.numPersonas = np.numPersonas;
 	}
 
 	public Coordenada getCoordenada() {
@@ -41,12 +48,26 @@ public class NodoPosicion {
 		this.numPersonas = numPersonas;
 	}
 
-	public NodoPosicion getSiguiente() {
-		return siguiente;
+	public void combine(NodoPosicion other) {
+		if (this.coordenada.equals(other.coordenada))
+			this.numPersonas += other.numPersonas;
 	}
 
-	public void setSiguiente(NodoPosicion siguiente) {
-		this.siguiente = siguiente;
+	@Override
+	public int hashCode() {
+		return coordenada.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof NodoPosicion))
+			return false;
+		NodoPosicion other = (NodoPosicion) obj;
+		return this.coordenada.equals(other.coordenada);
 	}
 
 }

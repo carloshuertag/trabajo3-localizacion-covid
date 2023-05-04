@@ -15,9 +15,8 @@ public class ListaContactos {
 	}
 
 	private void insertAt(NodoTemporal nt) throws IllegalArgumentException {
-		if (lista.contains(nt)) {
+		if (lista.contains(nt))
 			throw new IllegalArgumentException("Date is already in the list");
-		}
 		int index = 0;
 		for (NodoTemporal actual : lista) {
 			if (nt.compareTo(actual) < 0)

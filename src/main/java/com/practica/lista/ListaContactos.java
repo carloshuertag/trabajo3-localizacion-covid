@@ -8,7 +8,6 @@ import com.practica.genericas.PosicionPersona;
 
 public class ListaContactos {
 	private List<NodoTemporal> lista;
-	private int size;
 
 	public ListaContactos() {
 		super();

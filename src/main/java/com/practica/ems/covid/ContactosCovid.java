@@ -14,7 +14,6 @@ import com.practica.excecption.EmsInvalidTypeException;
 import com.practica.excecption.EmsLocalizationNotFoundException;
 import com.practica.excecption.EmsPersonNotFoundException;
 import com.practica.genericas.Constantes;
-import com.practica.genericas.Coordenada;
 import com.practica.genericas.FechaHora;
 import com.practica.genericas.Persona;
 import com.practica.genericas.PosicionPersona;
@@ -99,9 +98,8 @@ public class ContactosCovid {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (null != fr) {
+				if (null != fr)
 					fr.close();
-				}
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -132,7 +130,7 @@ public class ContactosCovid {
 				throw new EmsInvalidNumberOfDataException(
 						"El número de datos para LOCALIZACION es menor de 6");
 			}
-			PosicionPersona pp = this.crearPosicionPersona(data);
+			PosicionPersona pp = PosicionPersona.parsePosicionPersona(data);
 			getLocalizacion().addLocalizacion(pp);
 			getListaContactos().insertarNodoTemporal(pp);
 			return;
@@ -211,20 +209,6 @@ public class ContactosCovid {
 		persona.setCp(data[6]);
 		persona.setFechaNacimiento(FechaHora.parseDateTime(data[7]));
 		return persona;
-	}
-
-	private PosicionPersona crearPosicionPersona(String[] data) {
-		PosicionPersona posicionPersona = new PosicionPersona();
-		float latitud;
-		float longitud;
-		posicionPersona.setDocumento(data[1]);
-		String fecha = data[2];
-		String hora = data[3];
-		posicionPersona.setFechaPosicion(FechaHora.parseDateTime(fecha, hora));
-		latitud = Float.parseFloat(data[4]);
-		longitud = Float.parseFloat(data[5]);
-		posicionPersona.setCoordenada(new Coordenada(latitud, longitud));
-		return posicionPersona;
 	}
 
 }
